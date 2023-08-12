@@ -1,0 +1,10 @@
+# Client
+/client/node_modules
+/client/package-lock.json
+
+# Server
+/server/node_modules
+/server/package-lock.json
+
+# Other
+/src
