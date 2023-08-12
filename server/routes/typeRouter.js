@@ -1,12 +1,9 @@
 const Router = require("express");
 const router = new Router();
+const typeController = require("../controllers/typeController");
 
-// router.post("/", async (req, res) => {
+router.post("/", typeController.create);
+router.get("/", typeController.getAll);
 
-// });
-
-// router.get("/", async (req, res) => {
-
-// });
 
 module.exports = router;

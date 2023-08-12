@@ -1,16 +1,9 @@
 const Router = require("express");
 const router = new Router();
+const userController = require("../controllers/userController");
 
-// router.post("/registration", async (req, res) => {
-
-// });
-
-// router.post("/login", async (req, res) => {
-
-// });
-
-// router.get("/auth", async (req, res) => {
-
-// });
+router.post("/registration", userController.registration);
+router.post("/login", userController.login);
+router.get("/auth", userController.check);
 
 module.exports = router;
