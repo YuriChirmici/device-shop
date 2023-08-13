@@ -13,7 +13,7 @@ const DeviceItem = ({ device }) => {
 	return (
 		<Col md="3" className='mt-3' onClick={() => navigate(`${DEVICE_ROUTE}/${device.id}`) }>
 			<Card style={{ cursor: "pointer" }} border="light" className='p-2'>
-				<Image src={device.img || imagePlaceholder}/>
+				<Image src={device.img || imagePlaceholder} style={{width: "100%"}}/>
 				<div className="mt-1 d-flex justify-content-between align-items-center">
 					<div className="text-black-50"> brand... </div>
 					<div className="d-flex justify-content-between align-items-center">
