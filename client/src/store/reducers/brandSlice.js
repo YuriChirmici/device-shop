@@ -4,13 +4,18 @@ import { fetchBrands } from "../actionCreators/brand";
 const initialState = {
 	brands: [],
 	isLoading: false,
-	error: ""
+	error: "",
+	selectedBrand: {}
 };
 
-const brandSlice = createSlice({
+export const brandSlice = createSlice({
 	name: "brand",
 	initialState,
-	reducers: {},
+	reducers: {
+		selectBrand(state, action) {
+			state.selectedBrand = action.payload;
+		}
+	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchBrands.fulfilled, (state, action) => {
 			state.brands = action.payload;

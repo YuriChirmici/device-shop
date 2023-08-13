@@ -7,7 +7,7 @@ const initialState = {
 	error: ""
 }
 
-const deviceSlice = createSlice({
+export const deviceSlice = createSlice({
 	name: "device",
 	initialState,
 	reducers: {},
