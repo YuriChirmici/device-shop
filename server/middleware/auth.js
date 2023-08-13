@@ -19,6 +19,7 @@ module.exports = (roles = ["USER"]) => (req, res, next) => {
 		req.user = decoded;
 		next();
 	} catch (err) {
+		console.log(err);
 		res.status(401).json({ message: "Not authenticated" })
 	}
 }
@@ -28,5 +29,5 @@ const hasPermission = (role, requiredRoles) => {
 		return true;
 	}
 
-	return requiredRoles.includes(decoded.role);
+	return requiredRoles.includes(role);
 }

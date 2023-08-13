@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { getRoutesByRole } from '../routes';
 import Shop from '../pages/Shop';
-import ErrorPage from '../pages/Error';
 import { useSelector } from 'react-redux';
 
 const AppRouter = () => {
@@ -15,7 +14,7 @@ const AppRouter = () => {
 				{ routes.map(({ path, Component }) =>
 					<Route key={path} path={path} Component={Component} exact />
 				)}
-				<Route path="*" Component={ErrorPage} />
+				<Route path="*" Component={Shop} />
 			</Routes>
 		</div>
 	);

@@ -5,14 +5,14 @@ import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import Shop from "./pages/Shop";
 import {
-	ADMIN_ROUTE, BASKET_ROUTE, DEVICE_ROUTE,LOGIN_ROUTE, REGISTRATION_ROUTE,
+	ADMIN_ROUTE, BASKET_ROUTE, DEVICE_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE,
 	SHOP_ROUTE
 } from "./utils/consts";
 
-export const allRoutes = {
+export const getAllRoutes = () => ({
 	publicRoutes: [
-		{ path: REGISTRATION_ROUTE, Component: Registration },
-		{ path: LOGIN_ROUTE, Component: Login },
+		{ path: REGISTRATION_ROUTE, Component: Registration, unauthenticatedOnly: true },
+		{ path: LOGIN_ROUTE, Component: Login, unauthenticatedOnly: true },
 		{ path: SHOP_ROUTE, Component: Shop },
 		{ path: DEVICE_ROUTE + "/:id", Component: Device },
 	
@@ -23,7 +23,7 @@ export const allRoutes = {
 	adminRoutes: [
 		{ path: ADMIN_ROUTE, Component: Admin }
 	]
-};
+});
 
 export const permissions = {
 	userRoutes: [ "USER", "ADMIN" ],
@@ -31,9 +31,12 @@ export const permissions = {
 }
 
 export const getRoutesByRole = (role, isAuth = false) => {
+	const allRoutes = getAllRoutes();
 	if (!isAuth) {
 		return allRoutes.publicRoutes;
 	}
+
+	allRoutes.publicRoutes = allRoutes.publicRoutes.filter((route) => !route.unauthenticatedOnly);
 
 	const routesNames = [];
 	Object.entries(permissions).forEach(([ key, value ]) => {
@@ -42,8 +45,8 @@ export const getRoutesByRole = (role, isAuth = false) => {
 		}
 	});
 
-	const routes = [];
-	routesNames.forEach((key) => routes.push(...allRoutes[key]))
+	const routes = [ ...allRoutes.publicRoutes ];
+	routesNames.forEach((key) => routes.push(...allRoutes[key]));
 
 	return routes;
 }

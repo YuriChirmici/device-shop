@@ -1,15 +1,24 @@
 import cls from "./Navbar.module.css";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE } from "../../utils/consts";
+import { userSlice } from "../../store/reducers/userSlice";
 
 const NavBar = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const { logout } = userSlice.actions;
 	const { user, isAuth } = useSelector((state) => state.user);
 	const isAdmin = user.role === "ADMIN";
+	
+	const onLogout = () => {
+		dispatch(logout());
+		navigate("/login");
+	}
 
 	let navButtons = [
 		{ text: "Login", path: LOGIN_ROUTE },
@@ -19,13 +28,13 @@ const NavBar = () => {
 	if (isAuth) {
 		navButtons = [
 			isAdmin && { text: "Admin", path: ADMIN_ROUTE },
-			{ text: "Log out", path: LOGIN_ROUTE },
+			{ text: "Log out", path: LOGIN_ROUTE, onClick: onLogout },
 		];
 	}
 
 	const buttons = navButtons.filter((button) => button)
-		.map(({ text, path, props }) =>
-			<Button variant="outline-light" key={path} { ...(props || {})}>
+		.map(({ text, path, onClick }) =>
+			<Button variant="outline-light" key={path} onClick={onClick}>
 				<NavLink to={path}> {text} </NavLink>
 			</Button>
 		);

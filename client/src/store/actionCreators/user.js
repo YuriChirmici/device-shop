@@ -1,15 +1,51 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { $host, $authHost } from "../../api";
+import jwtDecode from "jwt-decode";
+import { LOCAL_TOKEN_KEY } from "../../utils/consts";
 
-export const fetchUser = createAsyncThunk(
-	"user/fetchUser",
-	async (_, thunkAPI) => {
+const saveToken = (token) => {
+	localStorage.setItem(LOCAL_TOKEN_KEY, token);
+}
+
+export const registerUser = createAsyncThunk(
+	"user/registration",
+	async (userData, thunkAPI) => {
 		try {
-			return {
-				email: "test@aa.a",
-				role: "USER"
-			}
+			const { data } = await $host.post("api/user/registration", userData);
+			saveToken(data.token);
+			return jwtDecode(data.token);
 		} catch (err) {
-			return thunkAPI.rejectWithValue("Cannot fetch user");
+			const message = err.response?.data?.message || "Cannot register user";
+			return thunkAPI.rejectWithValue(message);
 		}
 	}
-)
+);
+
+export const loginUser = createAsyncThunk(
+	"user/login",
+	async (userData, thunkAPI) => {
+		try {
+			const { data } = await $host.post("api/user/login", userData);
+			saveToken(data.token);
+			return jwtDecode(data.token);
+		} catch (err) {
+			const message = err.response?.data?.message || "Cannot login user";
+			return thunkAPI.rejectWithValue(message);
+		}
+	}
+);
+
+export const checkUser = createAsyncThunk(
+	"user/check",
+	async (_, thunkAPI) => {
+		try {
+			const { data } = await $authHost.get("api/user/auth");
+			saveToken(data.token);
+			return jwtDecode(data.token);
+		} catch (err) {
+			const message = err.response?.data?.message || "Cannot check user";
+			console.log(message);
+			return thunkAPI.rejectWithValue("");
+		}
+	}
+);
