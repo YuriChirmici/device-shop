@@ -26,12 +26,15 @@ export const allRoutes = {
 };
 
 export const permissions = {
-	publicRoutes: [ "", "USER", "ADMIN" ],
 	userRoutes: [ "USER", "ADMIN" ],
 	adminRoutes: [ "ADMIN" ],
 }
 
-export const getRoutesByRole = (role = "") => {
+export const getRoutesByRole = (role, isAuth = false) => {
+	if (!isAuth) {
+		return allRoutes.publicRoutes;
+	}
+
 	const routesNames = [];
 	Object.entries(permissions).forEach(([ key, value ]) => {
 		if (value.includes(role)) {

@@ -2,10 +2,11 @@ import { Routes, Route } from 'react-router-dom';
 import { getRoutesByRole } from '../routes';
 import Shop from '../pages/Shop';
 import ErrorPage from '../pages/Error';
+import { useSelector } from 'react-redux';
 
 const AppRouter = () => {
-	const role = "ADMIN";
-	const routes = getRoutesByRole(role);
+	const { user, isAuth } = useSelector((state) => state.user)
+	const routes = getRoutesByRole(user.role, isAuth);
 
 	return (
 		<div>
